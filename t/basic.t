@@ -3,6 +3,7 @@ use warnings;
 
 use lib 't/lib';
 use Test::More;
+use Test::Fatal;
 use A::App;
 
 my $app = A::App->new;
@@ -25,6 +26,8 @@ ok(!$b->a_thing($app), 'namespaced ro value remains empty');
 $app->stash->{'A::Controller::A'}{'a_thing'} = 'brap';
 is $a->a_thing($app), 'brap', 'accessor can still read correctly';
 is $b->a_thing($app), 'brap', 'namespaced accessor can still read correctly';
+
+like(exception { A::Controller::A::cat_has( 'foo' ) }, qr/cat_has requires "is" to be "ro" or "rw/, 'get exception when we leave out "is"');
 
 done_testing;
 

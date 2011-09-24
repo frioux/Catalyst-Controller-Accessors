@@ -12,7 +12,7 @@ Moose::Exporter->setup_import_methods(
 sub cat_has {
   my ( $meta, $name, %options ) = @_;
 
-  my $is        = $options{is};
+  my $is        = $options{is} || '';
   my $namespace = $options{namespace} || $meta->name;
 
   my $sub;
