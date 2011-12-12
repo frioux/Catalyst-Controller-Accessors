@@ -1,6 +1,7 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+  - Add ability to choose the slot an accessor uses
 
 0.001000  2011-09-24 02:02:13 CST6CDT
 

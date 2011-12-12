@@ -27,6 +27,12 @@ $app->stash->{'A::Controller::A'}{'a_thing'} = 'brap';
 is $a->a_thing($app), 'brap', 'accessor can still read correctly';
 is $b->a_thing($app), 'brap', 'namespaced accessor can still read correctly';
 
+ok(!$a->my_friend($app), 'slot value starts empty');
+ok(!$b->his_friend($app), 'namespaced/slotted value starts empty');
+$a->my_friend($app, 'frew');
+is($a->my_friend($app), 'frew', 'slotted value set');
+is($b->his_friend($app), 'frew', 'slotted/namespaced value set');
+
 like(exception { A::Controller::A::cat_has( 'foo' ) }, qr/cat_has requires "is" to be "ro" or "rw/, 'get exception when we leave out "is"');
 
 done_testing;
@@ -43,6 +49,10 @@ BEGIN {
 
    cat_has a_thing => (
       is => 'ro',
+   );
+
+   cat_has my_friend => (
+      is => 'rw',
    );
 
    1;
@@ -62,6 +72,12 @@ BEGIN {
    cat_has a_thing => (
       is => 'ro',
       namespace => 'A::Controller::A',
+   );
+
+   cat_has his_friend => (
+      is => 'ro',
+      namespace => 'A::Controller::A',
+      slot => 'my_friend',
    );
 
    1;

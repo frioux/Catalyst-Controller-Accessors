@@ -16,16 +16,17 @@ sub cat_has {
 
   my $is        = $options{is} || '';
   my $namespace = $options{namespace} || $meta->name;
+  my $slot      = $options{slot} || $name;
 
   my $sub;
   if ($is eq 'ro') {
-    $sub = sub { $_[1]->stash->{$namespace}{$name} };
+    $sub = sub { $_[1]->stash->{$namespace}{$slot} };
   } elsif ($is eq 'rw') {
     $sub = sub {
       if (exists $_[2]) {
-        $_[1]->stash->{$namespace}{$name} = $_[2]
+        $_[1]->stash->{$namespace}{$slot} = $_[2]
       } else {
-        return $_[1]->stash->{$namespace}{$name}
+        return $_[1]->stash->{$namespace}{$slot}
       }
     }
   } else {
@@ -56,6 +57,13 @@ sub cat_has {
  );
 
  cat_has $_ => ( is => 'rw' ) for qw(resultset thing);
+
+ # slot lets us use a different underlying field
+ cat_has other_user => (
+   is => 'ro',
+   namespace => 'MyApp::Controller::Users',
+   slot => 'user',
+ );
 
  sub load_rs {
    my ($self, $c) = @_;
@@ -96,5 +104,7 @@ Options:
 =item * C<is> - B<required>, must be either C<ro> or C<rw>
 
 =item * C<namespace> - defaults to current controller
+
+=item * C<slot> - defaults to accessor name
 
 =back
