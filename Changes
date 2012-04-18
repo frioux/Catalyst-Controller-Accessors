@@ -1,6 +1,8 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+
+0.003000  2012-04-18 13:15:02 America/Chicago
   - Add Moo style validation
 
 0.002000  2011-12-12 15:31:59 CST6CDT
