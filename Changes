@@ -1,6 +1,7 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+  - Add Moo style validation
 
 0.002000  2011-12-12 15:31:59 CST6CDT
   - Add ability to choose the slot an accessor uses

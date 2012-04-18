@@ -9,6 +9,7 @@ use A::App;
 my $app = A::App->new;
 my $a = A::Controller::A->new;
 my $b = A::Controller::B->new;
+my $c = A::Controller::C->new;
 
 ok(!$a->a_list($app), 'value starts empty');
 $a->a_list($app, '1,2,3');
@@ -34,6 +35,13 @@ is($a->my_friend($app), 'frew', 'slotted value set');
 is($b->his_friend($app), 'frew', 'slotted/namespaced value set');
 
 like(exception { A::Controller::A::cat_has( 'foo' ) }, qr/cat_has requires "is" to be "ro" or "rw/, 'get exception when we leave out "is"');
+
+subtest isa => sub {
+   ok(!$c->thing($app), 'slot value starts empty');
+   like(exception { $c->thing($app, 'frew') }, qr/thing is not an int!/, 'isa fails correctly');
+   ok(!exception { $c->thing($app, 10) }, 'isa passes correctly');
+   is($c->thing($app), 10, 'slotted/namespaced value set');
+};
 
 done_testing;
 
@@ -78,6 +86,20 @@ BEGIN {
       is => 'ro',
       namespace => 'A::Controller::A',
       slot => 'my_friend',
+   );
+
+   1;
+}
+
+BEGIN {
+   package A::Controller::C;
+
+   use Moose;
+   use Catalyst::Controller::Accessors;
+
+   cat_has thing => (
+      is => 'rw',
+      isa => sub { die 'thing is not an int!' if $_[0] !~ /^\d+$/ },
    );
 
    1;

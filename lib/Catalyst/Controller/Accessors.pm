@@ -15,6 +15,7 @@ sub cat_has {
   my ( $meta, $name, %options ) = @_;
 
   my $is        = $options{is} || '';
+  my $isa       = $options{isa};
   my $namespace = $options{namespace} || $meta->name;
   my $slot      = $options{slot} || $name;
 
@@ -24,6 +25,7 @@ sub cat_has {
   } elsif ($is eq 'rw') {
     $sub = sub {
       if (exists $_[2]) {
+        $isa->($_[2]) if $isa;
         $_[1]->stash->{$namespace}{$slot} = $_[2]
       } else {
         return $_[1]->stash->{$namespace}{$slot}
@@ -56,7 +58,16 @@ sub cat_has {
    namespace => 'MyApp::Controller::Users',
  );
 
- cat_has $_ => ( is => 'rw' ) for qw(resultset thing);
+ cat_has thing => ( is => 'rw' );
+
+ use Check::ISA;
+ cat_has resultset => (
+    is => 'rw',
+    isa => sub {
+      die 'resultset needs to be a DBIx::Class::ResultSet, but you passed "$_[0]"'
+         unless obj($_[0], 'DBIx::Class::ResultSet')
+    }
+ );
 
  # slot lets us use a different underlying field
  cat_has other_user => (
@@ -106,5 +117,7 @@ Options:
 =item * C<namespace> - defaults to current controller
 
 =item * C<slot> - defaults to accessor name
+
+=item * C<isa> - L<Moo> style validation coderef.  For a set of predefined validators check out L<MooX::Types::MooseLike::Base>.
 
 =back
