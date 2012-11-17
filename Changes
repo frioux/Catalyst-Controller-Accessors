@@ -2,6 +2,9 @@ Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
 
+0.003001  2012-11-17 17:09:10 CST6CDT
+  - Put MetaYAML back in dist
+
 0.003000  2012-04-18 13:15:02 America/Chicago
   - Add Moo style validation
 
