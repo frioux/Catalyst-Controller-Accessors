@@ -43,6 +43,14 @@ subtest isa => sub {
    is($c->thing($app), 10, 'slotted/namespaced value set');
 };
 
+subtest 'error checking' => sub {
+   like(exception { $c->thing }, qr/You must pass \$c to thing/, '2 arg check - rw');
+   like(exception { $c->thing(10, 11) }, qr/The \$c you passed must have a stash method/, '3 arg check - rw');
+   like(exception { $b->a_thing }, qr/You must pass \$c to a_thing/, '2 arg check - ro');
+   like(exception { $b->a_thing(10) }, qr/The \$c you passed must have a stash method/, '3 arg check - ro');
+
+};
+
 done_testing;
 
 BEGIN {

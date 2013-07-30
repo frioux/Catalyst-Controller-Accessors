@@ -1,6 +1,8 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+  - Die with error if user forgets to pass $c or passes something without a
+    stash method
 
 0.003001  2012-11-17 17:09:10 CST6CDT
   - Put MetaYAML back in dist

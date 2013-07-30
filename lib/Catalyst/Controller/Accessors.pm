@@ -21,9 +21,19 @@ sub cat_has {
 
   my $sub;
   if ($is eq 'ro') {
-    $sub = sub { $_[1]->stash->{$namespace}{$slot} };
+    $sub = sub {
+       die 'You must pass $c to ' . $name unless exists $_[1];
+       die 'The $c you passed must have a stash method, you passed ' . $_[1]
+          unless $_[1]->can('stash');
+
+       $_[1]->stash->{$namespace}{$slot}
+    };
   } elsif ($is eq 'rw') {
     $sub = sub {
+       die 'You must pass $c to ' . $name unless exists $_[1];
+       die 'The $c you passed must have a stash method, you passed ' . $_[1]
+          unless $_[1]->can('stash');
+
       if (exists $_[2]) {
         $isa->($_[2]) if $isa;
         $_[1]->stash->{$namespace}{$slot} = $_[2]
