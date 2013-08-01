@@ -1,6 +1,7 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+  - Fix `can` check on ancient perls (older than 5.18)
 
 0.003002  2013-07-30 13:05:11 CST6CDT
   - Die with error if user forgets to pass $c or passes something without a

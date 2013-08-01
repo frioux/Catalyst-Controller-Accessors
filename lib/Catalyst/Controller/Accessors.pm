@@ -6,6 +6,7 @@ use warnings;
 # ABSTRACT: Accessors for a namespaced stash
 
 use Carp 'croak';
+use Check::ISA 'obj_can';
 
 Moose::Exporter->setup_import_methods(
   with_meta => [ 'cat_has' ],
@@ -24,7 +25,7 @@ sub cat_has {
     $sub = sub {
        die 'You must pass $c to ' . $name unless exists $_[1];
        die 'The $c you passed must have a stash method, you passed ' . $_[1]
-          unless $_[1]->can('stash');
+          unless obj_can($_[1], 'stash');
 
        $_[1]->stash->{$namespace}{$slot}
     };
@@ -32,7 +33,7 @@ sub cat_has {
     $sub = sub {
        die 'You must pass $c to ' . $name unless exists $_[1];
        die 'The $c you passed must have a stash method, you passed ' . $_[1]
-          unless $_[1]->can('stash');
+          unless obj_can($_[1], 'stash');
 
       if (exists $_[2]) {
         $isa->($_[2]) if $isa;
