@@ -1,6 +1,8 @@
 Release history for Catalyst-Controller-Accessors
 
 {{$NEXT}}
+
+0.003003  2013-08-01 18:23:16 CST6CDT
   - Fix `can` check on ancient perls (older than 5.18)
 
 0.003002  2013-07-30 13:05:11 CST6CDT
