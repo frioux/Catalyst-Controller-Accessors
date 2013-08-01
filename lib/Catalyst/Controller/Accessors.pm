@@ -6,6 +6,7 @@ use warnings;
 # ABSTRACT: Accessors for a namespaced stash
 
 use Carp 'croak';
+use Moose::Exporter;
 use Check::ISA 'obj_can';
 
 Moose::Exporter->setup_import_methods(
